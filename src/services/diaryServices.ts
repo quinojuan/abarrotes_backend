@@ -1,9 +1,24 @@
-import { DiaryEntry, NonSensitiveInfoDiaryEntry } from "../types";
+import {
+  DiaryEntry,
+  NonSensitiveInfoDiaryEntry,
+  Visibility,
+  Wheather,
+} from "../types";
 import diaryData from "./diaries.json";
 
 const diaries: Array<DiaryEntry> = diaryData as Array<DiaryEntry>;
 
 export const getEntries = (): DiaryEntry[] => diaries;
+
+export const findById = (
+  id: number
+): NonSensitiveInfoDiaryEntry | undefined => {
+  const entry = diaries.find((d) => d.id === id);
+  if (entry) {
+    const { comment, ...restOfDiary } = entry;
+    return restOfDiary;
+  }
+};
 
 export const getEntriesWithoutSensitiveInfo =
   (): NonSensitiveInfoDiaryEntry[] => {
@@ -17,4 +32,19 @@ export const getEntriesWithoutSensitiveInfo =
     });
   };
 
-export const addEntry = (): undefined => undefined;
+export const addEntry = (
+  date: string,
+  weather: Wheather,
+  visibility: Visibility,
+  comment: string
+): DiaryEntry => {
+  const newDiaryEntry = {
+    id: Math.max(...diaries.map((d) => d.id)) + 1,
+    date,
+    weather,
+    visibility,
+    comment,
+  };
+  diaries.push(newDiaryEntry);
+  return newDiaryEntry;
+};
