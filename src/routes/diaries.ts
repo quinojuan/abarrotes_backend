@@ -15,12 +15,13 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   const { date, weather, visibility, comment } = req.body;
-  const newDiaryEntry = diaryServices.addEntry(
+
+  const newDiaryEntry = diaryServices.addDiary({
     date,
     weather,
     visibility,
-    comment
-  );
+    comment,
+  });
 
   res.json(newDiaryEntry);
 });
